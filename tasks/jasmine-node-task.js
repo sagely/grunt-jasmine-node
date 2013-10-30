@@ -52,7 +52,9 @@ module.exports = function (grunt) {
         options.coffee = options.useCoffee;
       }
 
-      options.specFolders.push(options.projectRoot);
+      if(options.specFolders.length <= 1) {
+        options.specFolders.push(options.projectRoot);
+      }
 
       options.regExpSpec = regExpSpec(options);
       options.onComplete = onComplete(options);
