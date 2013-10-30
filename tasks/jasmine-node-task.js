@@ -56,7 +56,9 @@ module.exports = function (grunt) {
         options.specFolders.push(options.projectRoot);
       }
 
-      options.regExpSpec = regExpSpec(options);
+      if(_.isUndefined(options.regExpSpec)) {
+        options.regExpSpec = regExpSpec(options);
+      }
       options.onComplete = onComplete(options);
       
       jasmine.executeSpecsInFolder(options);
