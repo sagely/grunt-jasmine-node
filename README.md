@@ -10,15 +10,18 @@ Then add this line to your project's `grunt.js` grunt file:
 ```javascript
 grunt.initConfig({
   jasmine_node: {
-    specNameMatcher: "./spec", // load only specs containing specNameMatcher
-    projectRoot: ".",
-    requirejs: false,
-    forceExit: true,
-    jUnit: {
-      report: false,
-      savePath : "./build/reports/jasmine/",
-      useDotNotation: true,
-      consolidate: true
+    js: {
+      extensions: 'js',
+      specNameMatcher: "./spec",
+      projectRoot: ".",
+      requirejs: false,
+      forceExit: true,
+      jUnit: {
+        report: false,
+        savePath : "./build/reports/jasmine/",
+        useDotNotation: true,
+        consolidate: true
+      }
     }
   }
 });
