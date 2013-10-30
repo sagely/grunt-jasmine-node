@@ -1,8 +1,9 @@
 'use strict';
 
+var jasmine = require('jasmine-node');
+var _       = require('underscore');
+
 module.exports = function (grunt) {
-    var jasmine = require('jasmine-node');
-    var _       = grunt.util._;
     var regExpSpec = function(options) {
       var match      = options.match;
       var nameMatch  = options.matchall ? "" : options.specNameMatcher + "\\.";
