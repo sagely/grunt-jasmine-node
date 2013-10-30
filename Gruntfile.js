@@ -20,20 +20,13 @@ module.exports = function (grunt) {
         all: ['tasks/**/*.js']
       },
       jasmine_node: {
-        options: {
-          forceExit: true,
-          match: '.',
-          matchall: false,
+        js: {
           extensions: 'js',
-          specNameMatcher: 'spec',
-          jUnit: {
-            report: false,
-            savePath : "./build/reports/jasmine/",
-            useDotNotation: true,
-            consolidate: true
-          }
         },
-        all: ['spec/']
+        coffee: {
+          extensions: 'coffee',
+          coffee: true
+        }
       }
     });
 
@@ -41,5 +34,4 @@ module.exports = function (grunt) {
     grunt.loadTasks('tasks');
 
     grunt.registerTask('default', ['jshint' ,'jasmine_node']);
-
 };
