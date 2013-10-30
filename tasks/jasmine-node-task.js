@@ -52,7 +52,7 @@ module.exports = function (grunt) {
         options.coffee = options.useCoffee;
       }
 
-      if(options.specFolders.length <= 1) {
+      if(options.specFolders.length == 0) {
         options.specFolders.push(options.projectRoot);
       }
 
