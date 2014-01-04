@@ -12,12 +12,12 @@ module.exports = function (grunt) {
     };
     var onComplete = function(options) {
       return function(runner, log) {
+        var count = runner.results().failedCount;
         if (options.forceExit) { 
-          var count = runner.results().failedCount;
           process.exit(count === 0 ? 0 : 1);
         }
         jasmine.getGlobal().jasmine.currentEnv_ = undefined;
-        options.done();
+        options.done(count === 0);
       };
     };
     grunt.registerMultiTask("jasmine_node", "Runs jasmine-node.", function() {
