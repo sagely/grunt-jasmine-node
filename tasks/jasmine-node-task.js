@@ -75,20 +75,12 @@ var runWithCoverage = function (options, projectRoot, runFn, done) {
 };
 
 module.exports = function (grunt) {
-    var regExpSpec = function(options) {
-      var match      = options.match;
-      var nameMatch  = options.matchall ? "" : options.specNameMatcher + "\\.";
-      var extensions = options.extensions;
-      return new RegExp(match + nameMatch + "(" + extensions + ")$", 'i');
-    };
     var onComplete = function(options) {
       return function(runner, log) {
-        var count = runner.results().failedCount;
         if (options.forceExit) { 
-          process.exit(count === 0 ? 0 : 1);
+          process.exit(global.jasmineResult.fail ? 1 : 0);
         }
-        jasmine.getGlobal().jasmine.currentEnv_ = undefined;
-        options.done(count === 0);
+        options.done(!global.jasmineResult.fail);
       };
     };
     grunt.registerMultiTask("jasmine_node", "Runs jasmine-node.", function() {
@@ -100,6 +92,7 @@ module.exports = function (grunt) {
         specNameMatcher: 'spec',
         extensions:      'js',
         specFolders:     [],
+        watchFolders:    [],
         isVerbose:       true,
         showColors:      true,
         teamcity:        false,
@@ -123,16 +116,17 @@ module.exports = function (grunt) {
         options.coffee = options.useCoffee;
       }
 
-      if(options.specFolders.length == 0) {
+      if(options.isVerbose) {
+        options.verbose = options.isVerbose;
+      }
+
+      if(options.specFolders.length === 0) {
         options.specFolders.push(options.projectRoot);
       }
 
-      if(_.isUndefined(options.regExpSpec)) {
-        options.regExpSpec = regExpSpec(options);
-      }
       options.onComplete = onComplete(options);
 
-      var runFn = _.bind(jasmine.executeSpecsInFolder, jasmine, options);
+      var runFn = _.bind(jasmine.run, jasmine, options);
       if (options.coverage) {
         runWithCoverage(options.coverage, options.projectRoot, runFn, options.done);
       } else {
