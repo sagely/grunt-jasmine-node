@@ -1,8 +1,8 @@
 /* jshint node: true */
 'use strict';
 
-var jasmine = require('jasmine-node');
-var _       = require('underscore');
+require('jasmine-node');
+var _ = require('underscore');
 
 var runWithCoverage = function (options) {
   var istanbul = require('istanbul'),
@@ -74,7 +74,7 @@ var runWithCoverage = function (options) {
       onComplete(runner, log);
     };
 
-    jasmine.run(options);
+    jasmine.executeSpecsInFolder(options);
   });
 };
 
@@ -130,10 +130,25 @@ module.exports = function (grunt) {
 
     options.onComplete = onComplete(options);
 
+    try {
+      var matcher = "";
+      if (options.match !== '.') {
+        matcher = options.match;
+      } else if (options.matchAll) {
+        matcher = "" + options.match + "(" + options.extensions + ")$";
+      } else {
+        matcher = "" + options.match + "spec\\.(" + options.extensions + ")$";
+      }
+      options.regExpSpec = new RegExp(matcher, "i");
+    } catch (_error) {
+      grunt.warn(_error);
+      return;
+    }
+
     if (options.coverage) {
       runWithCoverage(options);
     } else {
-      jasmine.run(options);
+      jasmine.executeSpecsInFolder(options);
     }
   });
 };
